@@ -1,5 +1,6 @@
 """
-Write series of CSV files acceptable for import into gb3gf codeplug tool
+Write series of CSV files acceptable for import into OpenGD77. This previously used the gb3gf codeplug tool, but the tool has been removed from the web due to integration with OpenGD77.
+
 
 Ex: OpenGD77
 """
@@ -53,20 +54,29 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
         "Channel Type",
         "Rx Frequency",
         "Tx Frequency",
+        "Bandwidth (kHz)",
         "Colour Code",
         "Timeslot",
         "Contact",
         "TG List",
+        "DMR ID", # New entry
+        "TS1_TA_Tx", # New entry
+        "TS2_TA_Tx ID", # New entry
         "RX Tone",
         "TX Tone",
-        "Power",
-        "Bandwidth",
         "Squelch",
+        "Power",
         "Rx Only",
         "Zone Skip",
         "All Skip",
         "TOT",
         "VOX",
+        "No Beep", # New entry
+        "No Eco", # New entry
+        "APRS", # New entry
+        "Latitude", # New entry
+        "Longitude", # New entry
+        "Use Location" # New entry
     ]
     with open("{}/Channels.csv".format(output_dir), "w", newline="") as f:
         csvw = csv.DictWriter(f, channel_fields, delimiter=";")
@@ -89,6 +99,9 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
                     "Colour Code": channel.color_code,
                     "Contact": "N/A",
                     "TG List": channel.grouplist_name(cp) if channel.grouplist else "None",
+                    "DMR ID": "None",
+                    "TS1_TA_Tx": "Off",
+                    "TS2_TA_Tx ID": "Off"
                 }
                 if channel.talkgroup:
                     d["Contact"] = channel.talkgroup.name_with_timeslot
@@ -101,13 +114,19 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
                     "Tx Frequency": round(channel.frequency + channel.offset, 5),
                     "Timeslot": 1,
                     "Power": str(channel.power),
-                    "Bandwidth": channel.bandwidth.flattened([Bandwidth._25, Bandwidth._125]).value + "KHz",
+                    "Bandwidth (kHz)": channel.bandwidth.flattened([Bandwidth._25, Bandwidth._125]).value + "KHz",
                     "Squelch": str(channel.squelch) if channel.squelch else "Disabled",
                     "Rx Only": value_replacements[channel.rx_only],
                     "Zone Skip": "No",
                     "All Skip": "No",
                     "TOT": 90,
                     "VOX": "No",
+                    "No Beep": "Yes",
+                    "No Eco": "No",
+                    "APRS": "None",
+                    "Latitude": "None",
+                    "Longitude": "None",
+                    "Use Location": "Yes"
                 }
             )
             csvw.writerow(d)
