@@ -59,9 +59,9 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
         "Timeslot",
         "Contact",
         "TG List",
-        "DMR ID", # New entry
-        "TS1_TA_Tx", # New entry
-        "TS2_TA_Tx ID", # New entry
+        "DMR ID",
+        "TS1_TA_Tx",
+        "TS2_TA_Tx ID",
         "RX Tone",
         "TX Tone",
         "Squelch",
@@ -71,15 +71,15 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
         "All Skip",
         "TOT",
         "VOX",
-        "No Beep", # New entry
-        "No Eco", # New entry
-        "APRS", # New entry
-        "Latitude", # New entry
-        "Longitude", # New entry
-        "Use Location" # New entry
+        "No Beep",
+        "No Eco",
+        "APRS",
+        "Latitude",
+        "Longitude",
+        "Use Location"
     ]
     with open("{}/Channels.csv".format(output_dir), "w", newline="") as f:
-        csvw = csv.DictWriter(f, channel_fields, delimiter=";")
+        csvw = csv.DictWriter(f, channel_fields, delimiter=",")
         csvw.writeheader()
         for ix, channel in enumerate(cp.channels):
             if isinstance(channel, AnalogChannel):
@@ -124,15 +124,15 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
                     "No Beep": "Yes",
                     "No Eco": "No",
                     "APRS": "None",
-                    "Latitude": "None",
-                    "Longitude": "None",
+                    "Latitude": channel.latitude,
+                    "Longitude": channel.longitude,
                     "Use Location": "Yes"
                 }
             )
             csvw.writerow(d)
     tg_fields = ["TG List Name"] + ["Contact {}".format(x) for x in range(1, 33)]
     with open("{}/TG_Lists.csv".format(output_dir), "w", newline="") as f:
-        csvw = csv.DictWriter(f, tg_fields, delimiter=";")
+        csvw = csv.DictWriter(f, tg_fields, delimiter=",")
         csvw.writeheader()
         n_grouplists = len(cp.grouplists)
         for gl in cp.grouplists:
@@ -154,7 +154,7 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
             csvw.writerow(tg_list)
     zone_fields = ["Zone Name"] + ["Channel {}".format(x) for x in range(1, 81)]
     with open("{}/Zones.csv".format(output_dir), "w", newline="") as f:
-        csvw = csv.DictWriter(f, zone_fields, delimiter=";")
+        csvw = csv.DictWriter(f, zone_fields, delimiter=",")
         csvw.writeheader()
         zone_names = [z.name for z in cp.zones]
         # OpenGD77 doesn't have scanlist, so simulate it with separate zones
@@ -170,7 +170,7 @@ def Codeplug_to_gb3gf_opengd77_csv(cp, output_dir):
             csvw.writerow(row)
     with open("{}/Contacts.csv".format(output_dir), "w", newline="") as f:
         csvw = csv.DictWriter(
-            f, ["Contact Name", "ID", "ID Type", "TS Override"], delimiter=";"
+            f, ["Contact Name", "ID", "ID Type", "TS Override"], delimiter=","
         )
         csvw.writeheader()
         for tg in sorted(contacts, key=lambda c: c.name_with_timeslot):

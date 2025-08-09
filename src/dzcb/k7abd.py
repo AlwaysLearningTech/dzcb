@@ -54,6 +54,8 @@ TX_FREQ = "TX Freq"
 CTCSS_DECODE = "CTCSS Decode"
 CTCSS_ENCODE = "CTCSS Encode"
 TX_PROHIBIT = "TX Prohibit"
+LATITUDE = "Latitude"
+LONGITUDE = "Longitude"
 ANALOG_CSV_FIELDS = [
     ZONE,
     CHANNEL_NAME,
@@ -64,6 +66,8 @@ ANALOG_CSV_FIELDS = [
     CTCSS_DECODE,
     CTCSS_ENCODE,
     TX_PROHIBIT,
+    LATITUDE,
+    LONGITUDE,
 ]
 
 
@@ -156,6 +160,8 @@ def Analog_from_csv(analog_repeaters_csv):
             frequency = float(r[RX_FREQ])
             offset = round(float(r[TX_FREQ]) - frequency, 1)
             power = r[POWER]
+            latitude = float(r[LATITUDE])
+            longitude = float(r[LONGITUDE])
             bandwidth = r[BANDWIDTH].rstrip("K")
             tone_encode = (
                 r[CTCSS_ENCODE] if r[CTCSS_ENCODE].lower() not in ("off", "") else None
@@ -173,6 +179,8 @@ def Analog_from_csv(analog_repeaters_csv):
                     tone_decode=tone_decode,
                     power=power,
                     bandwidth=bandwidth,
+                    latitude=latitude,
+                    longitude=longitude,
                 )
             )
         except ValueError as ve:
@@ -204,6 +212,8 @@ def DigitalRepeaters_from_k7abd_csv(digital_repeaters_csv, talkgroups_by_name):
         offset = round(float(r.pop("TX Freq")) - frequency, 1)
         color_code = r.pop("Color Code")
         power = r.pop("Power")
+        latitude = float(r.pop("Latitude"))
+        longitude = float(r.pop("Longitude"))
         talkgroups = []
         for tg_name, timeslot in r.items():
             if timeslot.strip() == "-":
@@ -235,6 +245,8 @@ def DigitalRepeaters_from_k7abd_csv(digital_repeaters_csv, talkgroups_by_name):
             offset=offset,
             color_code=color_code,
             power=power,
+            latitude=latitude,
+            longitude=longitude,
             static_talkgroups=sorted(talkgroups, key=lambda tg: tg.name),
         )
         yield repeater
@@ -258,6 +270,8 @@ def DigitalChannels_from_k7abd_csv(digital_others_csv, talkgroups_by_name):
         offset = round(float(r.pop("TX Freq")) - frequency, 1)
         color_code = r.pop("Color Code")
         power = r.pop("Power")
+        latitude = float(r.pop("Latitude"))
+        longitude = float(r.pop("Longitude"))
         tg_name = r.pop("Talk Group")
         try:
             talkgroup = Talkgroup.from_contact(
@@ -280,6 +294,8 @@ def DigitalChannels_from_k7abd_csv(digital_others_csv, talkgroups_by_name):
                 offset=offset,
                 color_code=color_code,
                 power=power,
+                latitude=latitude,
+                longitude=longitude,
                 talkgroup=talkgroup,
             )
         )

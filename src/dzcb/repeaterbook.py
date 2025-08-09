@@ -182,6 +182,8 @@ def repeater_to_k7abd_row(repeater, zone_name, name_format=None):
         k7abd.CTCSS_DECODE: normalize_tone(repeater["TSQ"]),
         k7abd.CTCSS_ENCODE: normalize_tone(repeater["PL"]),
         k7abd.TX_PROHIBIT: k7abd.OFF,
+        k7abd.LATITUDE: repeater["Lat"],
+        k7abd.LONGITUDE: repeater["Long"],
     }
 
 

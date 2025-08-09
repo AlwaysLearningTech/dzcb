@@ -211,6 +211,24 @@ class Channel:
     rx_only = attr.ib(
         default=False, validator=attr.validators.instance_of(bool), converter=bool
     )
+    no_beep = attr.ib(
+        default=True, validator=attr.validators.instance_of(bool), converter=bool
+    )
+    no_eco = attr.ib(
+        default=False, validator=attr.validators.instance_of(bool), converter=bool
+    )
+    arps = attr.ib(
+        default=False, validator=attr.validators.instance_of(bool), converter=bool
+    )
+    latitude = attr.ib(
+        default=None, validator=attr.validators.instance_of(float), converter=float
+    )
+    longitude = attr.ib(
+        default=None, validator=attr.validators.instance_of(float), converter=float
+    )
+    use_location = attr.ib(
+        default=True, validator=attr.validators.instance_of(bool), converter=bool
+    )
     scanlist = attr.ib(
         eq=False,
         default=None,
@@ -293,6 +311,9 @@ class DigitalChannel(Channel):
     bandwidth = Bandwidth._125
     squelch = 0
     color_code = attr.ib(default=1)
+    dmr_id = attr.ib(default=None)
+    ts1_ta_tx = attr.ib(default=None)
+    ts2_ta_tx_id = attr.ib(default=None)
     grouplist = attr.ib(
         default=None,
         validator=attr.validators.optional(attr.validators.instance_of(uuid.UUID)),
