@@ -3,9 +3,10 @@ Write series of CSV files acceptable for import into Anytone CPS tool
 
 Supported CPS versions
 
-    578: 1.11
+    578: 1.21
     868: 1.39
-    878: 1.21
+    878: 4.00
+    890: 1.03
 
 """
 import csv
@@ -95,12 +96,26 @@ class TXPermit(enum.Enum):
         return cls.ALWAYS.value
 
 
-# 578/868/878 Common Talkgroups.CSV format
+# 578/868/878/890 Common Talkgroups.CSV format
 talkgroup_fields = ("No.", "Radio ID", "Name", "Call Type", "Call Alert")
 talkgroup_filename = "TalkGroups.CSV"
-talkgroup_filename_578_1_11 = "ContactTalkGroups.CSV"
+talkgroup_filename_578_1_21 = "ContactTalkGroups.CSV"
 
-channel_fields_578_1_11 = {
+talkgroup_fields_890_1_03 = {
+    "No.": None,
+    "Radio ID": None,
+    "Callsign": None,
+    "Name": None,
+    "City": None,
+    "State": None,
+    "Country": None,
+    "Remarks": None,
+    "Call Type": None,
+    "Call Alert": None,
+}
+talkgroup_filename_890_1_03 = "DMRTalkGroups.CSV"
+
+channel_fields_578_1_21 = {
     "No.": None,
     "Channel Name": None,
     "Receive Frequency": None,
@@ -138,7 +153,7 @@ channel_fields_578_1_11 = {
     "2TONE Decode": "0",
     "Ranging": OFF,
     "Simplex": OFF,
-    "Digi APRS RX": OFF,
+    "APRS RX": OFF,
     "Analog APRS PTT Mode": OFF,
     "Digital APRS PTT Mode": OFF,
     "APRS Report Type": OFF,
@@ -150,6 +165,10 @@ channel_fields_578_1_11 = {
     "DataACK Disable": "0",
     "R5toneBot": "0",
     "R5ToneEot": "0",
+    "Auto Scan": OFF,
+    "Send Talker Alias": OFF,
+    "ARC4": OFF,
+    "ex_emg_kind": "0",
 }
 channel_fields_868_1_39 = {
     "No.": None,
@@ -191,7 +210,7 @@ channel_fields_868_1_39 = {
     "APRS Report": OFF,
     "APRS Report Channel": "1",
 }
-channel_fields_878_1_21 = {
+channel_fields_878_4_00 = {
     "No.": None,
     "Channel Name": None,
     "Receive Frequency": None,
@@ -242,9 +261,146 @@ channel_fields_878_1_21 = {
     "R5toneBot": "0",
     "R5ToneEot": "0",
 }
+channel_fields_878_4_00 = {
+    "No.": None,
+    "Channel Name": None,
+    "Receive Frequency": None,
+    "Transmit Frequency": None,
+    "Channel Type": None,
+    "Transmit Power": "High",
+    "Band Width": "25K",
+    "CTCSS/DCS Decode": OFF,
+    "CTCSS/DCS Encode": OFF,
+    "Contact": "",
+    "Contact Call Type": "Group Call",
+    "Contact TG/DMR ID": "0",
+    "Radio ID": "",
+    "Busy Lock/TX Permit": "Always",
+    "Squelch Mode": "Carrier",
+    "Optional Signal": OFF,
+    "DTMF ID": "1",
+    "2Tone ID": "1",
+    "5Tone ID": "1",
+    "PTT ID": OFF,
+    "RX Color Code": "1",
+    "Slot": "1",
+    "Scan List": NONE,
+    "Receive Group List": NONE,
+    "PTT Prohibit": OFF,
+    "Reverse": OFF,
+    "Simplex TDMA": OFF,
+    "Slot Suit": OFF,
+    "AES Digital Encryption": "Normal Encryption",
+    "Digital Encryption": OFF,
+    "Call Confirmation": OFF,
+    "Talk Around(Simplex)": OFF,
+    "Work Alone": OFF,
+    "Custom CTCSS": "251.1",
+    "2TONE Decode": "0",
+    "Ranging": OFF,
+    "Through Mode": OFF,
+    "APRS RX": OFF,
+    "Analog APRS PTT Mode": OFF,
+    "Digital APRS PTT Mode": OFF,
+    "APRS Report Type": OFF,
+    "Digital APRS Report Channel": "1",
+    "Correct Frequency[Hz]": "0",
+    "SMS Confirmation": OFF,
+    "Exclude channel from roaming": "0",
+    "DMR MODE": "0",
+    "DataACK Disable": "0",
+    "R5toneBot": "0",
+    "R5ToneEot": "0",
+    "Auto Scan": OFF,
+    "Ana Aprs Mute": OFF,
+    "Send Talker Alias": OFF,
+    "AnaAprsTxPath": "0",
+    "ARC4": OFF,
+    "ex_emg_kind": "0",
+    "TxCC": "1",
+}
+channel_fields_890_1_03 = {
+    "No.": None,
+    "Channel Name": None,
+    "Receive Frequency": None,
+    "Transmit Frequency": None,
+    "Channel Type": None,
+    "Transmit Power": "High",
+    "Band Width": "25K",
+    "CTCSS/DCS Decode": OFF,
+    "CTCSS/DCS Encode": OFF,
+    "Contact/Talk Group": "",
+    "Contact/Talk Group Call Type": "Group Call",
+    "Contact/Talk Group TG/DMR ID": "0",
+    "Radio ID": "",
+    "Busy Lock/TX Permit": "Always",
+    "Squelch Mode": "Carrier",
+    "Optional Signal": OFF,
+    "DTMF ID": "1",
+    "2Tone ID": "1",
+    "5Tone ID": "1",
+    "PTT ID": OFF,
+    "RX Color Code": "1",
+    "Slot": "1",
+    "Scan List": NONE,
+    "Receive Group List": NONE,
+    "PTT Prohibit": OFF,
+    "Reverse": OFF,
+    "Digital Duplex": OFF,
+    "Slot Suit": OFF,
+    "AES Digital Encryption": "Normal Encryption",
+    "Digital Encryption": OFF,
+    "Call Confirmation": OFF,
+    "Talk Around(Simplex)": OFF,
+    "Work Alone": OFF,
+    "Custom CTCSS": "251.1",
+    "2TONE Decode": "0",
+    "Ranging": OFF,
+    "Idle TX": OFF,
+    "APRS RX": OFF,
+    "Analog APRS PTT Mode": OFF,
+    "Digital APRS PTT Mode": OFF,
+    "APRS Report Type": OFF,
+    "Digital APRS Report Channel": "1",
+    "Correct Frequency[Hz]": "0",
+    "SMS Confirmation": OFF,
+    "Exclude channel from roaming": "0",
+    "DMR MODE": "0",
+    "DataACK Disable": "0",
+    "R5toneBot": "0",
+    "R5ToneEot": "0",
+    "Auto Scan": OFF,
+    "Ana APRS Mute": OFF,
+    "Send Talker Alias DMR/NX": OFF,
+    "AnaAprsTxPath": "0",
+    "ARC4": OFF,
+    "ex_emg_kind": "0",
+    "Rpga_Mdc": "0",
+    "DisturEn": OFF,
+    "DisturFreq": "0",
+    "dmr_crc_ignore": OFF,
+    "compand": OFF,
+    "tx_talkalaes": OFF,
+    "dup_call": OFF,
+    "tx_int": "0",
+    "BtRxState": "0",
+    "idle_tx": OFF,
+    "nxdn_wn": "0",
+    "NxdnRpga": "0",
+    "nxdnSqCon": "0",
+    "NxdnTxBusy": OFF,
+    "NxDnPttId": OFF,
+    "EnRan": OFF,
+    "DeRan": OFF,
+    "NxdnEncry": "0",
+    "NxdnGroupId": "0",
+    "NxdnIdNum": "0",
+    "NxdnStateNum": "0",
+    "txcc": "1",
+}
 channel_filename = "Channel.CSV"
 
-scanlist_fields_578_1_11 = {
+scanlist_fields_578_1_21 = {
     "No.": None,
     "Scan List Name": None,
     "Scan Channel Member": None,
@@ -280,7 +436,7 @@ scanlist_fields_868_1_39 = {
 }
 scanlist_filename = "ScanList.CSV"
 
-zone_fields_578_1_11 = {
+zone_fields_578_1_21 = {
     "No.": None,
     "Zone Name": None,
     "Zone Channel Member": None,
@@ -289,9 +445,10 @@ zone_fields_578_1_11 = {
     "A Channel": None,
     "A Channel RX Frequency": None,
     "A Channel TX Frequency": None,
-    "B Channel": None,
+    "": None,
     "B Channel RX Frequency": None,
     "B Channel TX Frequency": None,
+    "Zone Hide": 0,
 }
 zone_fields_868_1_39 = {
     "No.": None,
@@ -303,18 +460,18 @@ zone_fields_868_1_39 = {
 zone_filename = "Zone.CSV"
 
 SUPPORTED_RADIOS = {
-    "578_1_11": dict(
-        version="1.11",
+    "578_1_21": dict(
+        version="1.21",
         expand_members=True,
         frequency_range=(COMMERCIAL_VHF, AMATEUR_220, COMMERCIAL_UHF),
-        channel=channel_fields_578_1_11,
+        channel=channel_fields_578_1_21,
         channel_filename=channel_filename,
-        scanlist=scanlist_fields_578_1_11,
+        scanlist=scanlist_fields_578_1_21,
         scanlist_filename=scanlist_filename,
-        zone=zone_fields_578_1_11,
+        zone=zone_fields_578_1_21,
         zone_filename=zone_filename,
         talkgroup=talkgroup_fields,
-        talkgroup_filename=talkgroup_filename_578_1_11,
+        talkgroup_filename=talkgroup_filename_578_1_21,
         replace_field_names={
             "Through Mode": "Simplex",
         },
@@ -338,16 +495,32 @@ SUPPORTED_RADIOS = {
         },
         remove_fields=["Contact TG/DMR ID", "DMR MODE"],
     ),
-    "878_1_21": dict(
-        version="1.21",
+    "878_4_00": dict(
+        version="4.00",
         expand_members=True,
         frequency_range=(COMMERCIAL_VHF, COMMERCIAL_UHF),
-        channel=channel_fields_878_1_21,
+        channel=channel_fields_878_4_00,
         channel_filename=channel_filename,
-        scanlist=scanlist_fields_578_1_11,
+        scanlist=scanlist_fields_578_1_21,
         scanlist_filename=scanlist_filename,
-        zone=zone_fields_578_1_11,
+        zone=zone_fields_578_1_21,
         zone_filename=zone_filename,
+        talkgroup=talkgroup_fields,
+        talkgroup_filename=talkgroup_filename,
+        replace_field_names={},
+        remove_fields=[],
+    ),
+    # 878v2_4_00 produces identical output to 878_4_00, so omitted to avoid duplication
+    "890_1_03": dict(
+        version="1.03",
+        expand_members=True,
+        frequency_range=(COMMERCIAL_VHF, AMATEUR_220, COMMERCIAL_UHF),
+        channel=channel_fields_890_1_03,
+        channel_filename="Channel.CSV",
+        scanlist=scanlist_fields_578_1_21,
+        scanlist_filename=scanlist_filename,
+        zone=zone_fields_578_1_21,
+        zone_filename="DMRZone.CSV",
         talkgroup=talkgroup_fields,
         talkgroup_filename=talkgroup_filename,
         replace_field_names={},
@@ -355,7 +528,7 @@ SUPPORTED_RADIOS = {
     ),
 }
 
-DEFAULT_SUPPORTED_RADIOS = ("578_1_11", "868_1_39", "878_1_21")
+DEFAULT_SUPPORTED_RADIOS = ("578_1_21", "868_1_39", "878_4_00", "890_1_03")
 
 
 def Talkgroup_to_dict(index, talkgroup):
@@ -389,6 +562,8 @@ def AnalogChannel_to_dict(channel):
 def DigitalChannel_to_dict(channel):
     d = {
         "Color Code": str(channel.color_code),
+        "RX Color Code": str(channel.color_code),
+        "txcc": str(channel.color_code),
         "Busy Lock/TX Permit": TXPermit.value_from(channel),
         "DMR MODE": DMR_MODE.value_from(channel),
         # On the 578 and 878, DMR MODE = "Simplex" (0) channels
